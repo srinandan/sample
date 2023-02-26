@@ -1,12 +1,4 @@
 {
-	"name": "projects/102128743119/locations/us-east1/integrations/sample/versions/635cd253-4951-4801-955e-07c07f394f65",
-	"origin": "UI",
-	"snapshotNumber": "1",
-	"updateTime": "2023-02-26T02:32:11.864Z",
-	"lockHolder": "srinandans@google.com",
-	"createTime": "2023-02-26T02:06:19.287Z",
-	"lastModifierEmail": "srinandans@google.com",
-	"state": "DRAFT",
 	"triggerConfigs": [
 		{
 			"label": "API Trigger",
