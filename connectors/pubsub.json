@@ -1,0 +1,27 @@
+{
+	"name": "projects/nandanks-151422/locations/us-east1/connections/pubsub",
+	"createTime": "2023-02-26T02:08:02.946689635Z",
+	"updateTime": "2023-02-26T02:27:39.014316171Z",
+	"connectorVersion": "projects/nandanks-151422/locations/global/providers/gcp/connectors/pubsub/versions/1",
+	"status": {
+		"state": "ACTIVE"
+	},
+	"configVariables": [
+		{
+			"key": "project_id",
+			"stringValue": "nandanks-151422"
+		},
+		{
+			"key": "topic_id",
+			"stringValue": "mytopic"
+		}
+	],
+	"authConfig": {},
+	"serviceAccount": "connectors@nandanks-151422.iam.gserviceaccount.com",
+	"serviceDirectory": "projects/p854caaa989b65ae6-tp/locations/us-east1/namespaces/connectors/services/runtime",
+	"nodeConfig": {
+		"minNodeCount": 2,
+		"maxNodeCount": 50
+	}
+}
+
