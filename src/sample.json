@@ -1,7 +1,11 @@
 {
+	"snapshotNumber": "1",
 	"triggerConfigs": [
 		{
 			"label": "API Trigger",
+			"triggerType": "API",
+			"triggerNumber": "1",
+			"triggerId": "api_trigger/sample_API_1",
 			"startTasks": [
 				{
 					"taskId": "1"
@@ -9,21 +13,103 @@
 			],
 			"properties": {
 				"Trigger name": "sample_API_1"
-			},
-			"triggerType": "API",
-			"triggerNumber": "1",
-			"triggerId": "api_trigger/sample_API_1"
+			}
 		}
 	],
 	"taskConfigs": [
 		{
+			"task": "GenericConnectorTask",
+			"taskId": "2",
+			"parameters": {
+				"actionName": {
+					"key": "actionName",
+					"value": {
+						"stringValue": "publishMessage"
+					}
+				},
+				"config": {
+					"key": "config",
+					"value": {
+						"jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.connectors.GenericConnectorTaskConfig\",\n  \"connection\": {\n    \"connectionName\": \"projects/nandanks-151422/locations/us-east1/connections/pubsub\",\n    \"serviceName\": \"projects/p854caaa989b65ae6-tp/locations/us-east1/namespaces/connectors/services/runtime\",\n    \"connectorVersion\": \"projects/nandanks-151422/locations/global/providers/gcp/connectors/pubsub/versions/1\"\n  },\n  \"operation\": \"EXECUTE_ACTION\"\n}"
+					}
+				},
+				"connectorInputPayload": {
+					"key": "connectorInputPayload",
+					"value": {
+						"stringValue": "$`Task_2_connectorInputPayload`$"
+					}
+				},
+				"connectorOutputPayload": {
+					"key": "connectorOutputPayload",
+					"value": {
+						"stringValue": "$`Task_2_connectorOutputPayload`$"
+					}
+				}
+			},
+			"displayName": "Publish message",
+			"taskExecutionStrategy": "WHEN_ALL_SUCCEED"
+		},
+		{
+			"task": "FieldMappingTask",
+			"taskId": "3",
+			"parameters": {
+				"FieldMappingConfigTaskParameterKey": {
+					"key": "FieldMappingConfigTaskParameterKey",
+					"value": {
+						"jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"STRING_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$`Task_1_responseBody`$\"\n        }\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$`Task_2_connectorInputPayload`.message$\",\n      \"fieldType\": \"STRING_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
+					}
+				}
+			},
+			"displayName": "Data Mapping",
+			"nextTasks": [
+				{
+					"taskId": "2"
+				}
+			],
+			"taskExecutionStrategy": "WHEN_ALL_SUCCEED"
+		},
+		{
 			"task": "GenericRestV2Task",
 			"taskId": "1",
 			"parameters": {
-				"throwError": {
-					"key": "throwError",
+				"additionalHeaders": {
+					"key": "additionalHeaders",
+					"value": {
+						"jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.ParameterMap\",\n  \"entries\": [{\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"x-integration-env\"\n      }\n    },\n    \"value\": {\n      \"referenceKey\": \"$_env$\"\n    }\n  }]\n}"
+					}
+				},
+				"disableSSLValidation": {
+					"key": "disableSSLValidation",
+					"value": {
+						"booleanValue": false
+					}
+				},
+				"followRedirects": {
+					"key": "followRedirects",
 					"value": {
 						"booleanValue": true
+					}
+				},
+				"httpMethod": {
+					"key": "httpMethod",
+					"value": {
+						"stringValue": "GET"
+					}
+				},
+				"httpParams": {
+					"key": "httpParams",
+					"value": {}
+				},
+				"requestBody": {
+					"key": "requestBody",
+					"value": {
+						"stringValue": ""
+					}
+				},
+				"requestorId": {
+					"key": "requestorId",
+					"value": {
+						"stringValue": ""
 					}
 				},
 				"responseBody": {
@@ -36,15 +122,6 @@
 						}
 					}
 				},
-				"disableSSLValidation": {
-					"key": "disableSSLValidation",
-					"value": {
-						"booleanValue": false
-					}
-				},
-				"httpParams": {
-					"key": "httpParams"
-				},
 				"responseHeader": {
 					"key": "responseHeader",
 					"value": {
@@ -55,18 +132,6 @@
 						}
 					}
 				},
-				"userAgent": {
-					"key": "userAgent",
-					"value": {
-						"stringValue": ""
-					}
-				},
-				"httpMethod": {
-					"key": "httpMethod",
-					"value": {
-						"stringValue": "GET"
-					}
-				},
 				"responseStatus": {
 					"key": "responseStatus",
 					"value": {
@@ -75,6 +140,12 @@
 								"$`Task_1_responseStatus`$"
 							]
 						}
+					}
+				},
+				"throwError": {
+					"key": "throwError",
+					"value": {
+						"booleanValue": true
 					}
 				},
 				"url": {
@@ -89,134 +160,70 @@
 						"stringValue": "HARPOON"
 					}
 				},
+				"urlQueryStrings": {
+					"key": "urlQueryStrings",
+					"value": {}
+				},
 				"useSSL": {
 					"key": "useSSL",
 					"value": {
 						"booleanValue": false
 					}
 				},
-				"requestorId": {
-					"key": "requestorId",
+				"userAgent": {
+					"key": "userAgent",
 					"value": {
 						"stringValue": ""
 					}
-				},
-				"urlQueryStrings": {
-					"key": "urlQueryStrings"
-				},
-				"requestBody": {
-					"key": "requestBody",
-					"value": {
-						"stringValue": ""
-					}
-				},
-				"followRedirects": {
-					"key": "followRedirects",
-					"value": {
-						"booleanValue": true
-					}
-				},
-				"additionalHeaders": {
-					"key": "additionalHeaders"
 				}
 			},
+			"displayName": "Call httpbin",
 			"nextTasks": [
 				{
 					"taskId": "3"
 				}
 			],
-			"taskExecutionStrategy": "WHEN_ALL_SUCCEED",
-			"displayName": "Call httpbin"
-		},
-		{
-			"task": "GenericConnectorTask",
-			"taskId": "2",
-			"parameters": {
-				"connectorInputPayload": {
-					"key": "connectorInputPayload",
-					"value": {
-						"stringValue": "$`Task_2_connectorInputPayload`$"
-					}
-				},
-				"config": {
-					"key": "config",
-					"value": {
-						"jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.connectors.GenericConnectorTaskConfig\",\n  \"connection\": {\n    \"connectionName\": \"projects/nandanks-151422/locations/us-east1/connections/pubsub\",\n    \"serviceName\": \"projects/p854caaa989b65ae6-tp/locations/us-east1/namespaces/connectors/services/runtime\",\n    \"connectorVersion\": \"projects/nandanks-151422/locations/global/providers/gcp/connectors/pubsub/versions/1\"\n  },\n  \"operation\": \"EXECUTE_ACTION\"\n}"
-					}
-				},
-				"connectorOutputPayload": {
-					"key": "connectorOutputPayload",
-					"value": {
-						"stringValue": "$`Task_2_connectorOutputPayload`$"
-					}
-				},
-				"actionName": {
-					"key": "actionName",
-					"value": {
-						"stringValue": "publishMessage"
-					}
-				}
-			},
-			"taskExecutionStrategy": "WHEN_ALL_SUCCEED",
-			"displayName": "Publish message"
-		},
-		{
-			"task": "FieldMappingTask",
-			"taskId": "3",
-			"parameters": {
-				"FieldMappingConfigTaskParameterKey": {
-					"key": "FieldMappingConfigTaskParameterKey",
-					"value": {
-						"jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"STRING_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$`Task_1_responseBody`$\"\n        }\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$`Task_2_connectorInputPayload`.message$\",\n      \"fieldType\": \"STRING_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
-					}
-				}
-			},
-			"nextTasks": [
-				{
-					"taskId": "2"
-				}
-			],
-			"taskExecutionStrategy": "WHEN_ALL_SUCCEED",
-			"displayName": "Data Mapping"
+			"taskExecutionStrategy": "WHEN_ALL_SUCCEED"
 		}
 	],
 	"integrationParameters": [
 		{
 			"key": "`Task_1_responseHeader`",
 			"dataType": "STRING_VALUE",
-			"displayName": "`Task_1_responseHeader`",
 			"isTransient": true,
 			"producer": "1_1"
 		},
 		{
 			"key": "`Task_1_responseBody`",
 			"dataType": "STRING_VALUE",
-			"displayName": "`Task_1_responseBody`",
 			"isTransient": true,
 			"producer": "1_1"
 		},
 		{
 			"key": "`Task_1_responseStatus`",
 			"dataType": "STRING_VALUE",
-			"displayName": "`Task_1_responseStatus`",
 			"isTransient": true,
 			"producer": "1_1"
 		},
 		{
 			"key": "`Task_2_connectorInputPayload`",
 			"dataType": "JSON_VALUE",
-			"displayName": "`Task_2_connectorInputPayload`",
 			"producer": "1_2",
 			"jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"message\": {\n      \"type\": \"string\",\n      \"readOnly\": false,\n      \"description\": \"Message to publish to Cloud PubSub.\",\n      \"default\": \"\"\n    }\n  }\n}"
 		},
 		{
 			"key": "`Task_2_connectorOutputPayload`",
 			"dataType": "JSON_VALUE",
-			"displayName": "`Task_2_connectorOutputPayload`",
 			"isTransient": true,
 			"producer": "1_2",
 			"jsonSchema": "{\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"messageId\": {\n        \"type\": \"string\",\n        \"readOnly\": true,\n        \"description\": \"Message ID of the published message.\"\n      }\n    }\n  }\n}"
+		},
+		{
+			"key": "_env",
+			"dataType": "STRING_VALUE",
+			"defaultValue": {
+				"stringValue": "dev"
+			}
 		}
 	]
 }
-

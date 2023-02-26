@@ -21,5 +21,13 @@
 				"connectionName": "pubsub"
 			}
 		}
+	],
+	"param_overrides": [
+		{
+			"key": "_env",
+			"defaultValue": {
+				"stringValue": "dev"
+			}
+		}
 	]
 }
